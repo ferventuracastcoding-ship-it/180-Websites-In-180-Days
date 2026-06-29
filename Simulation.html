@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simulation Web System</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #050814;
+    color: white;
+  }
+
+  header {
+    text-align: center;
+    padding: 20px;
+    font-size: 22px;
+    color: #4de3ff;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background: linear-gradient(90deg, #4de3ff, #7c4dff);
+  }
+
+  #world {
+    display: grid;
+    grid-template-columns: repeat(20, 25px);
+    grid-template-rows: repeat(20, 25px);
+    justify-content: center;
+    gap: 2px;
+    padding: 20px;
+  }
+
+  .cell {
+    width: 25px;
+    height: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+  }
+
+  .agent {
+    background: #4de3ff !important;
+  }
+
+  .food {
+    background: #2ecc71 !important;
+  }
+
+  .wall {
+    background: #7c4dff !important;
+  }
+
+  .stats {
+    text-align: center;
+    margin-top: 10px;
+    opacity: 0.8;
+  }
+</style>
+</head>
+
+<body>
+
+<header>🌐 AI Simulation World</header>
+
+<div class="controls">
+  <button onclick="startSim()">Start</button>
+  <button onclick="stopSim()">Stop</button>
+  <button onclick="resetSim()">Reset</button>
+</div>
+
+<div id="world"></div>
+
+<div class="stats">
+  Agents: <span id="agentsCount">0</span> |
+  Food: <span id="foodCount">0</span>
+</div>
+
+<script>
+// =====================
+// CONFIG
+// =====================
+const size = 20;
+let grid = [];
+let interval;
+
+// =====================
+// INIT WORLD
+// =====================
+const world = document.getElementById("world");
+
+function createWorld() {
+  world.innerHTML = "";
+  grid = [];
+
+  for (let y = 0; y < size; y++) {
+    let row = [];
+    for (let x = 0; x < size; x++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      world.appendChild(cell);
+
+      row.push({
+        x,
+        y,
+        el: cell,
+        type: "empty"
+      });
+    }
+    grid.push(row);
+  }
+}
+
+// =====================
+// ENTITIES
+// =====================
+let agents = [];
+let food = [];
+
+function spawnAgents(n = 5) {
+  for (let i = 0; i < n; i++) {
+    agents.push({
+      x: Math.floor(Math.random() * size),
+      y: Math.floor(Math.random() * size),
+      energy: 10
+    });
+  }
+}
+
+function spawnFood(n = 20) {
+  for (let i = 0; i < n; i++) {
+    food.push({
+      x: Math.floor(Math.random() * size),
+      y: Math.floor(Math.random() * size)
+    });
+  }
+}
+
+// =====================
+// SIMULATION LOGIC
+// =====================
+function step() {
+  // move agents
+  agents.forEach(agent => {
+    const dx = Math.floor(Math.random() * 3) - 1;
+    const dy = Math.floor(Math.random() * 3) - 1;
+
+    agent.x = Math.max(0, Math.min(size - 1, agent.x + dx));
+    agent.y = Math.max(0, Math.min(size - 1, agent.y + dy));
+
+    // eat food
+    for (let i = food.length - 1; i >= 0; i--) {
+      if (food[i].x === agent.x && food[i].y === agent.y) {
+        food.splice(i, 1);
+        agent.energy += 5;
+      }
+    }
+
+    agent.energy--;
+
+    // die if no energy
+    if (agent.energy <= 0) {
+      agent.dead = true;
+    }
+  });
+
+  agents = agents.filter(a => !a.dead);
+
+  // respawn food slowly
+  if (Math.random() < 0.3) {
+    food.push({
+      x: Math.floor(Math.random() * size),
+      y: Math.floor(Math.random() * size)
+    });
+  }
+
+  render();
+}
+
+// =====================
+// RENDER WORLD
+// =====================
+function render() {
+  // reset
+  grid.forEach(row => {
+    row.forEach(cell => {
+      cell.el.className = "cell";
+    });
+  });
+
+  // draw food
+  food.forEach(f => {
+    grid[f.y][f.x].el.classList.add("food");
+  });
+
+  // draw agents
+  agents.forEach(a => {
+    grid[a.y][a.x].el.classList.add("agent");
+  });
+
+  document.getElementById("agentsCount").innerText = agents.length;
+  document.getElementById("foodCount").innerText = food.length;
+}
+
+// =====================
+// CONTROLS
+// =====================
+function startSim() {
+  if (interval) return;
+  interval = setInterval(step, 300);
+}
+
+function stopSim() {
+  clearInterval(interval);
+  interval = null;
+}
+
+function resetSim() {
+  stopSim();
+  agents = [];
+  food = [];
+  createWorld();
+  spawnAgents(5);
+  spawnFood(25);
+  render();
+}
+
+// =====================
+// START
+// =====================
+createWorld();
+spawnAgents(5);
+spawnFood(25);
+render();
+
+</script>
+
+</body>
+</html>
