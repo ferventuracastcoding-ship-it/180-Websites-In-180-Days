@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abandoned Website™</title>
+<style>
+    body {
+        margin: 0;
+        font-family: "Courier New", monospace;
+        background: #0f0f0f;
+        color: #33ff33;
+        overflow-x: hidden;
+    }
+
+    .glitch {
+        animation: flicker 2s infinite;
+    }
+
+    @keyframes flicker {
+        0% { opacity: 1; }
+        45% { opacity: 0.8; }
+        50% { opacity: 0.2; }
+        55% { opacity: 1; }
+        100% { opacity: 0.9; }
+    }
+
+    header {
+        padding: 20px;
+        background: black;
+        border-bottom: 2px dashed #33ff33;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    .stamp {
+        font-size: 12px;
+        color: red;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    nav button {
+        background: #111;
+        border: 1px solid #33ff33;
+        color: #33ff33;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    nav button:hover {
+        background: #33ff33;
+        color: black;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .panel {
+        border: 1px dashed #33ff33;
+        padding: 15px;
+        background: rgba(0,0,0,0.7);
+    }
+
+    .broken {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
+
+    .popup {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: black;
+        border: 1px solid red;
+        padding: 10px;
+        display: none;
+    }
+
+    .marquee {
+        white-space: nowrap;
+        overflow: hidden;
+        border-top: 1px dashed #33ff33;
+        border-bottom: 1px dashed #33ff33;
+    }
+
+    .marquee span {
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll 10s linear infinite;
+    }
+
+    @keyframes scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-100%); }
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        opacity: 0.6;
+    }
+</style>
+</head>
+<body>
+
+<header class="glitch">
+    <h1>WELCOME TO MY WEBSITE</h1>
+    <div class="stamp">LAST UPDATED: 2003 • SERVER STATUS: ???</div>
+</header>
+
+<nav>
+    <button onclick="brokenLink()">Home</button>
+    <button onclick="brokenLink()">About</button>
+    <button onclick="brokenLink()">Guestbook</button>
+    <button onclick="brokenLink()">Downloads</button>
+</nav>
+
+<div class="marquee">
+    <span>⚠ THIS WEBSITE HAS BEEN ABANDONED ⚠ PLEASE DO NOT REFRESH ⚠ SOME FEATURES MAY BE MISSING ⚠</span>
+</div>
+
+<div class="container">
+    <div class="panel">
+        <h2>📁 Welcome Message</h2>
+        <p>Hi... if you're seeing this, the webmaster probably forgot this site exists.</p>
+        <p class="broken">Latest update: added new flash intro (not working anymore)</p>
+    </div>
+
+    <div class="panel">
+        <h2>💀 Broken Features</h2>
+        <ul>
+            <li onclick="brokenLink()">📎 Download Resume (404)</li>
+            <li onclick="brokenLink()">📷 Photo Gallery (corrupted)</li>
+            <li onclick="brokenLink()">🎵 Music Player (requires Flash)</li>
+            <li onclick="brokenLink()">💬 Chat Room (bots only)</li>
+        </ul>
+    </div>
+
+    <div class="panel">
+        <h2>📜 Ancient Comments</h2>
+        <p>"cool site!!!" - user_2002</p>
+        <p>"why does nothing work" - guest123</p>
+        <p>"is this still maintained?" - unknown</p>
+    </div>
+
+    <div class="panel">
+        <h2>🧠 AI Revival Console</h2>
+        <button onclick="reviveSite()">TRY TO REVIVE WEBSITE</button>
+        <p id="status">System offline...</p>
+    </div>
+</div>
+
+<div class="popup" id="popup">
+    ERROR: Connection lost to GeoCities server.
+</div>
+
+<footer>
+    © 1999–2003 AbandonedWeb Inc. | Best viewed in Internet Explorer 5
+</footer>
+
+<script>
+    function brokenLink() {
+        const messages = [
+            "404: Page forgot itself",
+            "This feature has emotionally retired",
+            "Link broken since 2004",
+            "You hear distant dial-up noises... but nothing happens",
+            "Access denied by nostalgia firewall"
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+    }
+
+    function reviveSite() {
+        const status = document.getElementById("status");
+        const popup = document.getElementById("popup");
+
+        const steps = [
+            "Scanning abandoned files...",
+            "Recovering broken HTML...",
+            "Reconnecting to GeoCities...",
+            "Injecting life into server...",
+            "ERROR: TOO MUCH NOSTALGIA"
+        ];
+
+        let i = 0;
+        status.innerText = steps[i];
+
+        const interval = setInterval(() => {
+            i++;
+            if (i < steps.length) {
+                status.innerText = steps[i];
+            } else {
+                clearInterval(interval);
+                popup.style.display = "block";
+                setTimeout(() => popup.style.display = "none", 4000);
+                status.innerText = "REVIVAL FAILED (but it tried its best)";
+            }
+        }, 1200);
+    }
+
+    // Random glitch effect
+    setInterval(() => {
+        document.body.style.transform = 
+            `translate(${Math.random()*2}px, ${Math.random()*2}px)`;
+    }, 2000);
+</script>
+
+</body>
+</html>
