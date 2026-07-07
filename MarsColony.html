@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mars Colony Meme Mission</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#120704;
+color:white;
+}
+
+
+/* Header */
+
+header{
+background:#3b1208;
+padding:35px;
+text-align:center;
+}
+
+header h1{
+font-size:45px;
+color:#ff7043;
+}
+
+
+
+/* Hero */
+
+.hero{
+
+height:650px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+padding:25px;
+
+background:
+linear-gradient(
+rgba(0,0,0,.6),
+rgba(0,0,0,.85)
+),
+url("https://images.unsplash.com/photo-1614728894747-a83421e2b9c9");
+
+background-size:cover;
+
+}
+
+
+.hero h2{
+
+font-size:55px;
+
+}
+
+
+.hero span{
+
+color:#ff7043;
+
+}
+
+
+.hero p{
+
+font-size:22px;
+
+max-width:800px;
+
+margin:25px auto;
+
+}
+
+
+
+button{
+
+padding:15px 40px;
+
+border:none;
+
+border-radius:40px;
+
+background:#ff7043;
+
+color:white;
+
+font-size:18px;
+
+cursor:pointer;
+
+}
+
+
+button:hover{
+
+transform:scale(1.1);
+
+}
+
+
+
+
+section{
+
+padding:60px 8%;
+
+}
+
+
+.title{
+
+text-align:center;
+
+color:#ff7043;
+
+font-size:40px;
+
+margin-bottom:35px;
+
+}
+
+
+
+/* Meme cards */
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:25px;
+
+}
+
+
+.card{
+
+background:#24100a;
+
+padding:30px;
+
+border-radius:20px;
+
+border:2px solid #ff7043;
+
+}
+
+
+.card h3{
+
+color:#ff7043;
+
+}
+
+
+
+
+/* Images */
+
+.gallery{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:20px;
+
+}
+
+
+.gallery img{
+
+width:100%;
+
+height:260px;
+
+object-fit:cover;
+
+border-radius:20px;
+
+}
+
+
+
+/* Holy words */
+
+.holy{
+
+background:#22120b;
+
+padding:40px;
+
+border-radius:20px;
+
+text-align:center;
+
+font-size:22px;
+
+line-height:1.8;
+
+border:1px solid #ffcc80;
+
+}
+
+
+.holy span{
+
+color:#ffd54f;
+
+}
+
+
+
+
+/* Mission Data */
+
+#data{
+
+background:#050505;
+
+padding:30px;
+
+border-radius:20px;
+
+color:#7CFF7C;
+
+}
+
+
+
+
+footer{
+
+background:#3b1208;
+
+padding:30px;
+
+text-align:center;
+
+}
+
+
+
+@media(max-width:900px){
+
+.hero h2{
+
+font-size:35px;
+
+}
+
+.cards,
+.gallery{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🚀 Meme Mars Colony</h1>
+
+<p>Earth's Backup Plan: Version 1.0</p>
+
+</header>
+
+
+
+
+<section class="hero">
+
+<div>
+
+<h2>
+
+Welcome To <span>Mars</span>,
+
+The Planet With No WiFi... Yet
+
+</h2>
+
+
+<p>
+
+Scientists said "build a colony."
+The internet heard:
+"Make a space village where everyone complains about gravity."
+
+</p>
+
+
+<button onclick="launch()">
+
+Launch Meme Mission
+
+</button>
+
+</div>
+
+</section>
+
+
+
+
+
+<section>
+
+<h2 class="title">
+
+Mars Colony Problems
+
+</h2>
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>🌱 Mars Gardening</h3>
+
+<p>
+Day 1: Plant seeds.
+Day 2: Wait.
+Day 300: Still waiting.
+The potato is now the colony leader.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>🏠 Space Houses</h3>
+
+<p>
+Luxury Mars apartments include:
+one room, zero neighbors, unlimited dust.
+</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>👽 Alien Meeting</h3>
+
+<p>
+First contact checklist:
+Say hello.
+Offer snacks.
+Do not ask for WiFi password.
+</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<h2 class="title">
+
+Mars Colony Images
+
+</h2>
+
+
+<div class="gallery">
+
+
+<img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9">
+
+
+<img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa">
+
+
+<img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section>
+
+
+<h2 class="title">
+
+Holy Words For The Journey
+
+</h2>
+
+
+<div class="holy">
+
+
+<p>
+
+"<span>The heavens declare the glory of God;</span>
+the skies proclaim the work of His hands."
+
+<br><br>
+
+— Psalm 19:1
+
+</p>
+
+
+<p>
+
+<br>
+
+"<span>With God all things are possible.</span>"
+
+<br><br>
+
+— Matthew 19:26
+
+</p>
+
+
+<p>
+
+<br>
+
+"Be strong and courageous. Do not fear."
+
+<br><br>
+
+— Joshua 1:9
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+
+<h2 class="title">
+
+Mars Mission Status
+
+</h2>
+
+
+<pre id="data">
+
+{
+ "planet":"Mars",
+ "colony":"Under Construction",
+ "meme_level":"Over 9000",
+ "coffee_supply":"Critical",
+ "potato_farm":"Growing",
+ "mission":"Create a future among the stars"
+}
+
+</pre>
+
+
+</section>
+
+
+
+
+
+
+
+<footer>
+
+🚀 Meme Mars Colony © 2026  
+<br>
+"Making Mars less empty, one meme at a time."
+
+</footer>
+
+
+
+
+
+<script>
+
+
+function launch(){
+
+
+document.getElementById("data").innerHTML=
+
+`
+
+{
+ "mission":"Activated 🚀",
+ "status":"Mars Colony Online",
+ "robots":"Working",
+ "humans":"Packing Bags",
+ "pizza":"Loading...",
+ "hope":"Infinite"
+}
+
+`;
+
+}
+
+
+</script>
+
+
+
+</body>
+</html>
