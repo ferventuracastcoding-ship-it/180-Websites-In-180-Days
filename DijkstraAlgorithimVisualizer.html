@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dijkstra Algorithm Visualizer</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#0f172a;
+    color:white;
+    font-family:Arial, sans-serif;
+    text-align:center;
+}
+
+h1{
+    color:#38bdf8;
+    margin-top:25px;
+}
+
+
+button{
+    background:#38bdf8;
+    color:#001018;
+    border:none;
+    padding:12px 20px;
+    margin:8px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0ea5e9;
+}
+
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(30,22px);
+    justify-content:center;
+    gap:2px;
+    margin:30px;
+}
+
+
+.node{
+
+    width:22px;
+    height:22px;
+    background:#475569;
+    border-radius:3px;
+
+}
+
+
+.wall{
+    background:#020617;
+}
+
+
+.start{
+    background:#22c55e;
+}
+
+
+.end{
+    background:#ef4444;
+}
+
+
+.visited{
+
+    background:#2563eb;
+    animation:visit .3s;
+
+}
+
+
+.path{
+
+    background:#facc15;
+
+}
+
+
+@keyframes visit{
+
+from{
+transform:scale(.3);
+}
+
+to{
+transform:scale(1);
+}
+
+}
+
+
+.panel{
+
+background:#1e293b;
+width:80%;
+margin:20px auto;
+padding:20px;
+border-radius:15px;
+text-align:left;
+
+}
+
+
+.panel h2{
+
+color:#38bdf8;
+
+}
+
+
+.legend span{
+
+display:inline-block;
+padding:10px;
+margin:5px;
+border-radius:5px;
+
+}
+
+
+.green{
+background:#22c55e;
+}
+
+.red{
+background:#ef4444;
+}
+
+.blue{
+background:#2563eb;
+}
+
+.yellow{
+background:#facc15;
+color:black;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>🚀 Dijkstra Algorithm Visualizer</h1>
+
+
+<div>
+
+<button onclick="runDijkstra()">
+Run Dijkstra
+</button>
+
+
+<button onclick="generateWalls()">
+Generate Walls
+</button>
+
+
+<button onclick="resetGrid()">
+Reset
+</button>
+
+
+</div>
+
+
+
+<div id="grid" class="grid"></div>
+
+
+
+<div class="panel">
+
+<h2>Button Explanations</h2>
+
+
+<h3>▶ Run Dijkstra</h3>
+
+<p>
+Starts the Dijkstra shortest path algorithm.
+The algorithm explores nearby nodes by choosing the node
+with the smallest distance value. Blue nodes represent
+visited locations. When the destination is found,
+the shortest path is highlighted in yellow.
+</p>
+
+
+
+<h3>🧱 Generate Walls</h3>
+
+<p>
+Creates random obstacles on the grid.
+Walls represent blocked areas that the algorithm
+cannot travel through. This simulates real-world
+problems like roads, terrain, or obstacles.
+</p>
+
+
+
+<h3>🔄 Reset</h3>
+
+<p>
+Clears all walls, visited nodes, and paths.
+It creates a fresh grid so you can test another
+shortest path search.
+</p>
+
+
+</div>
+
+
+
+
+<div class="panel">
+
+<h2>How Dijkstra's Algorithm Works</h2>
+
+<p>
+
+Dijkstra's algorithm is a graph searching algorithm
+used to find the shortest path between two points.
+
+The algorithm starts at the green starting node and assigns
+it a distance of 0.
+
+Every other node begins with infinity distance.
+
+The algorithm repeatedly chooses the closest unvisited node,
+checks its neighbors, and updates their distances.
+
+Once the red destination node is reached,
+the algorithm follows the stored previous nodes
+to rebuild the shortest route.
+
+</p>
+
+
+<div class="legend">
+
+<h3>Colors</h3>
+
+<span class="green">
+Start Node
+</span>
+
+<span class="red">
+End Node
+</span>
+
+<span class="blue">
+Visited Nodes
+</span>
+
+<span class="yellow">
+Shortest Path
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+const rows=20;
+const cols=30;
+
+
+let grid=[];
+
+
+let start={
+row:10,
+col:5
+};
+
+
+let end={
+row:10,
+col:25
+};
+
+
+
+const container=
+document.getElementById("grid");
+
+
+
+
+
+function createGrid(){
+
+
+container.innerHTML="";
+grid=[];
+
+
+for(let r=0;r<rows;r++){
+
+
+let row=[];
+
+
+for(let c=0;c<cols;c++){
+
+
+let node={
+
+row:r,
+col:c,
+wall:false,
+distance:Infinity,
+previous:null
+
+};
+
+
+
+let box=document.createElement("div");
+
+box.className="node";
+
+
+if(r===start.row &&
+c===start.col)
+
+box.classList.add("start");
+
+
+if(r===end.row &&
+c===end.col)
+
+box.classList.add("end");
+
+
+
+box.onclick=()=>{
+
+if(node.wall)
+{
+node.wall=false;
+box.classList.remove("wall");
+}
+
+else{
+
+node.wall=true;
+box.classList.add("wall");
+
+}
+
+};
+
+
+
+node.element=box;
+
+
+container.appendChild(box);
+
+
+row.push(node);
+
+}
+
+
+grid.push(row);
+
+}
+
+
+}
+
+
+
+
+
+function generateWalls(){
+
+resetGrid();
+
+
+for(let row of grid){
+
+for(let node of row){
+
+
+if(
+Math.random()<0.25 &&
+node!==getStart() &&
+node!==getEnd()
+)
+
+{
+
+node.wall=true;
+
+node.element.classList.add("wall");
+
+}
+
+
+}
+
+}
+
+
+}
+
+
+
+
+
+async function runDijkstra(){
+
+
+clearSearch();
+
+
+let start=getStart();
+
+start.distance=0;
+
+
+let visited=[];
+
+
+
+while(true){
+
+
+let current=null;
+
+
+
+for(let row of grid){
+
+for(let node of row){
+
+
+if(
+!visited.includes(node)
+&&
+(node.distance <
+(current?.distance ??
+Infinity))
+
+)
+
+current=node;
+
+
+}
+
+}
+
+
+
+if(!current)
+break;
+
+
+if(current.wall)
+continue;
+
+
+visited.push(current);
+
+
+if(current!==start)
+
+{
+
+current.element.classList.add("visited");
+
+await delay(40);
+
+}
+
+
+if(current===getEnd())
+break;
+
+
+
+for(let neighbor of neighbors(current)){
+
+
+let newDistance=
+current.distance+1;
+
+
+if(newDistance < neighbor.distance)
+
+{
+
+neighbor.distance=newDistance;
+
+neighbor.previous=current;
+
+
+}
+
+
+}
+
+
+
+}
+
+
+
+showPath();
+
+
+}
+
+
+
+
+
+function showPath(){
+
+
+let current=getEnd();
+
+
+
+while(current){
+
+current.element.classList.add("path");
+
+current=current.previous;
+
+}
+
+
+}
+
+
+
+
+function neighbors(node){
+
+
+let list=[];
+
+
+let dirs=[
+[1,0],
+[-1,0],
+[0,1],
+[0,-1]
+];
+
+
+
+for(let d of dirs){
+
+
+let r=node.row+d[0];
+
+let c=node.col+d[1];
+
+
+
+if(
+r>=0 &&
+r<rows &&
+c>=0 &&
+c<cols
+)
+
+list.push(grid[r][c]);
+
+
+}
+
+
+return list;
+
+}
+
+
+
+
+
+function clearSearch(){
+
+
+for(let row of grid){
+
+for(let node of row){
+
+
+node.distance=Infinity;
+node.previous=null;
+
+
+node.element.classList.remove(
+"visited",
+"path"
+);
+
+
+}
+
+
+}
+
+
+}
+
+
+
+
+
+function resetGrid(){
+
+createGrid();
+
+}
+
+
+
+function getStart(){
+
+return grid[start.row][start.col];
+
+}
+
+
+
+function getEnd(){
+
+return grid[end.row][end.col];
+
+}
+
+
+
+function delay(ms){
+
+return new Promise(
+resolve=>setTimeout(resolve,ms)
+);
+
+}
+
+
+
+
+createGrid();
+
+
+</script>
+
+
+</body>
+</html>
