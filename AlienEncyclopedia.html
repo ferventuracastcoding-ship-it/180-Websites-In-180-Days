@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alien Planet Encyclopedia</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#050510;
+    color:white;
+}
+
+/* HERO */
+
+.hero{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background:
+    linear-gradient(rgba(0,0,20,.5),rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa");
+    background-size:cover;
+    background-position:center;
+}
+
+.hero h1{
+    font-size:75px;
+    color:#65ffcc;
+    text-shadow:
+    0 0 20px #65ffcc,
+    0 0 50px #008cff;
+}
+
+.hero p{
+    max-width:800px;
+    margin:30px auto;
+    font-size:22px;
+    line-height:1.7;
+}
+
+
+button{
+    padding:15px 40px;
+    border-radius:40px;
+    border:2px solid #65ffcc;
+    background:transparent;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#65ffcc;
+    color:#000;
+    box-shadow:0 0 30px #65ffcc;
+}
+
+
+/* SECTIONS */
+
+section{
+    padding:80px 10%;
+}
+
+.title{
+    text-align:center;
+    font-size:45px;
+    margin-bottom:40px;
+    color:#65ffcc;
+}
+
+
+/* PLANETS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+
+.card{
+    background:#101525;
+    padding:30px;
+    border-radius:20px;
+    border:1px solid #008cff;
+    transition:.4s;
+}
+
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 30px #008cff;
+}
+
+
+.card h3{
+    color:#65ffcc;
+    margin-bottom:15px;
+}
+
+
+/* PLANET CIRCLE */
+
+.planet{
+    width:150px;
+    height:150px;
+    margin:20px auto;
+    border-radius:50%;
+    background:
+    radial-gradient(circle at 30% 30%,#65ffcc,#143d4d,#020208);
+    box-shadow:
+    0 0 40px #65ffcc;
+    animation:rotate 8s linear infinite;
+}
+
+
+@keyframes rotate{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+
+/* SPECIES */
+
+.species{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:25px;
+}
+
+
+.life{
+    width:250px;
+    padding:25px;
+    background:#16102a;
+    border-radius:20px;
+    border:2px solid #a45cff;
+    text-align:center;
+}
+
+
+.life:hover{
+    box-shadow:0 0 25px #a45cff;
+}
+
+
+/* FOOTER */
+
+footer{
+    background:#020205;
+    padding:40px;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="hero">
+
+<div>
+
+<h1>
+Alien Planet Encyclopedia
+</h1>
+
+<p>
+A digital archive documenting mysterious worlds,
+extraterrestrial civilizations, alien ecosystems,
+and discoveries from the edge of the galaxy.
+</p>
+
+<button>
+Explore Galaxy
+</button>
+
+</div>
+
+</header>
+
+
+
+<section>
+
+<h2 class="title">
+🪐 Featured Planets
+</h2>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<div class="planet"></div>
+
+<h3>Planet Xyron-7</h3>
+
+<p>
+Location: Andromeda Sector<br>
+Gravity: 1.3 Earth G<br>
+Atmosphere: Nitrogen + Alien gases<br>
+Temperature: -40°C to 80°C
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="planet"></div>
+
+<h3>Vega Prime</h3>
+
+<p>
+A purple ocean world covered with
+floating continents and ancient alien ruins.
+</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<div class="planet"></div>
+
+<h3>Nebula-04</h3>
+
+<p>
+A mysterious planet hidden inside a cosmic nebula
+with unknown energy sources.
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+<section>
+
+<h2 class="title">
+👽 Alien Species Database
+</h2>
+
+
+<div class="species">
+
+
+<div class="life">
+<h3>Galorians</h3>
+<p>
+Highly intelligent beings with crystal-based technology.
+</p>
+</div>
+
+
+<div class="life">
+<h3>Zenthari</h3>
+<p>
+Ocean creatures capable of communicating through light.
+</p>
+</div>
+
+
+<div class="life">
+<h3>Orion Machines</h3>
+<p>
+Ancient robotic civilization exploring the galaxy.
+</p>
+</div>
+
+
+<div class="life">
+<h3>Vorlax</h3>
+<p>
+Desert survivors with advanced biological armor.
+</p>
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+<section>
+
+<h2 class="title">
+🔬 Scientific Research
+</h2>
+
+
+<div class="grid">
+
+
+<div class="card">
+<h3>Atmosphere Analysis</h3>
+<p>
+Scientists study alien gases, weather systems,
+and planetary climates.
+</p>
+</div>
+
+
+<div class="card">
+<h3>Alien Technology</h3>
+<p>
+Research into spacecraft, energy systems,
+and unknown materials.
+</p>
+</div>
+
+
+<div class="card">
+<h3>Deep Space Missions</h3>
+<p>
+Exploration vessels continue searching for
+new civilizations.
+</p>
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<footer>
+
+<h2 style="color:#65ffcc;">
+Beyond Earth Lies Infinity
+</h2>
+
+<p>
+Alien Planet Encyclopedia • Galactic Research Division
+</p>
+
+</footer>
+
+
+</body>
+</html>
