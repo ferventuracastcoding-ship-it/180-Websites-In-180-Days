@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Complaint Center</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+
+body{
+    background:#f2f2f2;
+    color:#222;
+}
+
+
+/* Header */
+
+header{
+
+    background:#1b263b;
+    color:white;
+    padding:30px;
+    text-align:center;
+
+}
+
+
+header h1{
+
+    color:#4cc9f0;
+    font-size:38px;
+
+}
+
+
+/* Hero */
+
+.hero{
+
+    padding:50px 8%;
+    text-align:center;
+
+}
+
+
+.hero h2{
+
+    font-size:45px;
+    margin-bottom:15px;
+
+}
+
+
+
+/* Form */
+
+.container{
+
+    width:90%;
+    max-width:900px;
+    margin:auto;
+
+}
+
+
+.box{
+
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    margin-bottom:30px;
+
+}
+
+
+
+label{
+
+    font-weight:bold;
+    display:block;
+    margin-top:15px;
+
+}
+
+
+input,select,textarea{
+
+    width:100%;
+    padding:12px;
+    margin-top:8px;
+    border:1px solid #ccc;
+    border-radius:8px;
+
+}
+
+
+
+textarea{
+
+    height:150px;
+    resize:none;
+
+}
+
+
+
+button{
+
+    margin-top:20px;
+    background:#0077b6;
+    color:white;
+    padding:14px 30px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:16px;
+
+}
+
+
+button:hover{
+
+    background:#023e8a;
+
+}
+
+
+
+/* Complaint Cards */
+
+.complaint{
+
+    background:#f8f9fa;
+    padding:20px;
+    border-left:5px solid #0077b6;
+    margin-top:15px;
+    border-radius:10px;
+
+}
+
+
+.status{
+
+    color:#e67e22;
+    font-weight:bold;
+
+}
+
+
+
+footer{
+
+    background:#1b263b;
+    color:white;
+    text-align:center;
+    padding:20px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>📢 Complaint Center</h1>
+
+<p>Your voice matters</p>
+
+</header>
+
+
+
+
+<section class="hero">
+
+<h2>Submit A Complaint</h2>
+
+<p>
+Tell us your issue and our team will review it.
+</p>
+
+</section>
+
+
+
+
+
+<div class="container">
+
+
+<div class="box">
+
+
+<h2>Complaint Form</h2>
+
+
+
+<label>Name</label>
+
+<input id="name" placeholder="Enter your name">
+
+
+
+<label>Email</label>
+
+<input id="email" placeholder="Enter your email">
+
+
+
+<label>Complaint Category</label>
+
+<select id="category">
+
+<option>Customer Service</option>
+<option>Product Issue</option>
+<option>Billing Problem</option>
+<option>Technical Support</option>
+<option>Other</option>
+
+</select>
+
+
+
+
+<label>Priority</label>
+
+<select id="priority">
+
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+<option>Urgent</option>
+
+</select>
+
+
+
+
+<label>Description</label>
+
+<textarea id="message"
+placeholder="Describe your complaint"></textarea>
+
+
+
+
+<button onclick="submitComplaint()">
+Submit Complaint
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="box">
+
+
+<h2>Submitted Complaints</h2>
+
+
+<div id="complaints">
+
+<p>No complaints submitted yet.</p>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<footer>
+
+© 2026 Complaint Center | Customer Support Portal
+
+</footer>
+
+
+
+
+
+<script>
+
+
+function submitComplaint(){
+
+
+let name=
+document.getElementById("name").value;
+
+
+let category=
+document.getElementById("category").value;
+
+
+let priority=
+document.getElementById("priority").value;
+
+
+let message=
+document.getElementById("message").value;
+
+
+
+if(name==="" || message===""){
+
+alert("Please complete the form");
+
+return;
+
+}
+
+
+
+let box=document.getElementById("complaints");
+
+
+if(box.innerHTML.includes("No complaints")){
+
+box.innerHTML="";
+
+}
+
+
+
+box.innerHTML += `
+
+<div class="complaint">
+
+<h3>${category}</h3>
+
+<p>${message}</p>
+
+<p>
+Submitted by: ${name}
+</p>
+
+<p>
+Priority:
+<b>${priority}</b>
+</p>
+
+<p class="status">
+Status: Under Review
+</p>
+
+</div>
+
+`;
+
+
+
+alert("Complaint submitted successfully!");
+
+
+
+document.getElementById("message").value="";
+
+
+}
+
+
+</script>
+
+
+</body>
+</html>like 
