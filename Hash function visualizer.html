@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hash Function Visualizer</title>
+
+<style>
+/* =========================================================
+   GLOBAL STYLES
+========================================================= */
+
+/* Remove default spacing and use predictable sizing. */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main page. */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top, #172554, #080d1c 55%, #02040a);
+    color: white;
+    min-height: 100vh;
+    padding: 25px;
+}
+
+/* Main application wrapper. */
+.app {
+    max-width: 1400px;
+    margin: auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Main title. */
+h1 {
+    color: #60a5fa;
+    font-size: 2.6rem;
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.8);
+}
+
+/* Subtitle. */
+.subtitle {
+    margin-top: 8px;
+    color: #94a3b8;
+}
+
+/* =========================================================
+   CONTROL PANEL
+========================================================= */
+
+.controls {
+    background: rgba(8, 15, 30, 0.96);
+    border: 1px solid #263b63;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Input row. */
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 160px auto auto auto;
+    gap: 10px;
+}
+
+/* Text input and number input. */
+input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    border: 1px solid #334b70;
+    background: #030712;
+    color: white;
+    outline: none;
+    font-size: 1rem;
+}
+
+/* Input focus effect. */
+input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.3);
+}
+
+/* Buttons. */
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 17px;
+    background: #1d4ed8;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Button hover. */
+button:hover {
+    transform: translateY(-2px);
+    background: #2563eb;
+}
+
+/* Step button. */
+.step-btn {
+    background: #7c3aed;
+}
+
+/* Reset button. */
+.reset-btn {
+    background: #475569;
+}
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Statistic card. */
+.stat {
+    background: rgba(8, 15, 30, 0.96);
+    border: 1px solid #263b63;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+/* Statistic number. */
+.stat-value {
+    color: #60a5fa;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Statistic label. */
+.stat-label {
+    color: #94a3b8;
+    margin-top: 5px;
+}
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Panel. */
+.panel {
+    background: rgba(7, 13, 26, 0.97);
+    border: 1px solid #263b63;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* Panel heading. */
+h2 {
+    color: #93c5fd;
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   CHARACTER CARDS
+========================================================= */
+
+.character-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 100px;
+}
+
+/* Character card. */
+.character-card {
+    width: 85px;
+    padding: 12px 8px;
+    background: #0f1b35;
+    border: 1px solid #29446f;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+/* Character currently being processed. */
+.character-card.active {
+    border-color: #60a5fa;
+    background: #173b70;
+    transform: scale(1.12);
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.7);
+}
+
+/* Character that has already been processed. */
+.character-card.complete {
+    border-color: #22c55e;
+}
+
+/* Character itself. */
+.char {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+/* Character code. */
+.char-code {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    margin-top: 5px;
+}
+
+/* Character index. */
+.char-index {
+    color: #60a5fa;
+    font-size: 0.7rem;
+    margin-top: 3px;
+}
+
+/* =========================================================
+   HASH CALCULATION
+========================================================= */
+
+/* Calculation area. */
+.calculation {
+    background: #030712;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 180px;
+    font-family: monospace;
+}
+
+/* Calculation line. */
+.calculation-line {
+    margin-bottom: 10px;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+/* Highlighted number. */
+.number {
+    color: #60a5fa;
+}
+
+/* Operator. */
+.operator {
+    color: #c084fc;
+}
+
+/* Result. */
+.result {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+/* =========================================================
+   TABLE VISUALIZATION
+========================================================= */
+
+.hash-table {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+}
+
+/* Bucket. */
+.bucket {
+    min-height: 90px;
+    background: #050b17;
+    border: 1px solid #263b63;
+    border-radius: 8px;
+    text-align: center;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+/* Active bucket. */
+.bucket.active {
+    border-color: #60a5fa;
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.7);
+    transform: translateY(-5px);
+}
+
+/* Bucket index. */
+.bucket-index {
+    background: #101d36;
+    color: #60a5fa;
+    padding: 7px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+/* Bucket content. */
+.bucket-content {
+    padding: 10px 5px;
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+/* Filled bucket. */
+.bucket.filled .bucket-content {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+/* =========================================================
+   FORMULA
+========================================================= */
+
+.formula {
+    margin-top: 15px;
+    padding: 15px;
+    border-left: 4px solid #60a5fa;
+    background: #0b1428;
+    border-radius: 8px;
+    font-family: monospace;
+    color: #cbd5e1;
+}
+
+/* =========================================================
+   LOG
+========================================================= */
+
+.log {
+    margin-top: 15px;
+    height: 180px;
+    overflow-y: auto;
+    background: #02040a;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: monospace;
+}
+
+/* Log entry. */
+.log-entry {
+    margin-bottom: 7px;
+    color: #94a3b8;
+}
+
+/* Log highlight. */
+.log-entry strong {
+    color: #60a5fa;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .input-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hash-table {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .hash-table {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header>
+
+    <h1>🔐 HASH FUNCTION VISUALIZER</h1>
+
+    <p class="subtitle">
+        Animate Strings → Character Codes → Hash Values → Table Indexes
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     CONTROLS
+====================================================== -->
+
+<section class="controls">
+
+    <div class="input-row">
+
+        <!-- String input. -->
+        <input
+            id="keyInput"
+            type="text"
+            value="Mars-001"
+            placeholder="Enter a string..."
+        >
+
+        <!-- Table size. -->
+        <input
+            id="tableSizeInput"
+            type="number"
+            value="10"
+            min="2"
+            max="50"
+            placeholder="Table size"
+        >
+
+        <!-- Start animation. -->
+        <button onclick="startHash()">
+            ▶ HASH
+        </button>
+
+        <!-- Process one step. -->
+        <button
+            class="step-btn"
+            onclick="stepHash()"
+        >
+            ⏭ STEP
+        </button>
+
+        <!-- Reset. -->
+        <button
+            class="reset-btn"
+            onclick="resetVisualizer()"
+        >
+            ↻ RESET
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STATISTICS
+====================================================== -->
+
+<section class="stats">
+
+    <div class="stat">
+
+        <div
+            id="characterCount"
+            class="stat-value"
+        >
+            0
+        </div>
+
+        <div class="stat-label">
+            Characters
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div
+            id="currentHash"
+            class="stat-value"
+        >
+            0
+        </div>
+
+        <div class="stat-label">
+            Current Hash
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div
+            id="currentIndex"
+            class="stat-value"
+        >
+            -
+        </div>
+
+        <div class="stat-label">
+            Final Index
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div
+            id="progress"
+            class="stat-value"
+        >
+            0%
+        </div>
+
+        <div class="stat-label">
+            Progress
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MAIN VISUALIZATION
+====================================================== -->
+
+<div class="main-grid">
+
+
+<!-- =====================================================
+     CHARACTER PROCESSING PANEL
+====================================================== -->
+
+<section class="panel">
+
+    <h2>🔤 Character Processing</h2>
+
+    <div
+        id="characterGrid"
+        class="character-grid"
+    ></div>
+
+    <h2 style="margin-top:20px;">
+        🧮 Hash Calculation
+    </h2>
+
+    <div
+        id="calculation"
+        class="calculation"
+    >
+        Waiting for input...
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HASH TABLE PANEL
+====================================================== -->
+
+<section class="panel">
+
+    <h2>🗃️ Hash Table</h2>
+
+    <div
+        id="hashTable"
+        class="hash-table"
+    ></div>
+
+    <div class="formula">
+
+        <strong>Hash Algorithm:</strong>
+
+        <br><br>
+
+        hash = (hash × 31 + characterCode) % tableSize
+
+        <br><br>
+
+        finalIndex = hash % tableSize
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- =====================================================
+     OPERATION LOG
+====================================================== -->
+
+<section class="panel" style="margin-top:20px;">
+
+    <h2>📡 Algorithm Log</h2>
+
+    <div
+        id="log"
+        class="log"
+    ></div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
+
+/* Store the current key. */
+let hashKey = "";
+
+/* Store the table size. */
+let hashTableSize = 10;
+
+/* Store the current character position. */
+let currentStep = 0;
+
+/* Store the current hash value. */
+let hashValue = 0;
+
+/* Store the animation timer. */
+let animationTimer = null;
+
+
+/* =========================================================
+   GET DOM ELEMENTS
+========================================================= */
+
+const keyInput =
+    document.getElementById("keyInput");
+
+const tableSizeInput =
+    document.getElementById("tableSizeInput");
+
+const characterGrid =
+    document.getElementById("characterGrid");
+
+const calculation =
+    document.getElementById("calculation");
+
+const hashTable =
+    document.getElementById("hashTable");
+
+const log =
+    document.getElementById("log");
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+resetVisualizer();
+
+
+/* =========================================================
+   CREATE HASH TABLE
+========================================================= */
+
+function createHashTable() {
+
+    /* Clear previous buckets. */
+    hashTable.innerHTML = "";
+
+    /* Create every bucket. */
+    for (
+        let i = 0;
+        i < hashTableSize;
+        i++
+    ) {
+
+        /* Create bucket. */
+        const bucket =
+            document.createElement("div");
+
+        /* Add bucket class. */
+        bucket.className = "bucket";
+
+        /* Give bucket an ID. */
+        bucket.id = `bucket-${i}`;
+
+        /* Create bucket index. */
+        const index =
+            document.createElement("div");
+
+        /* Add index class. */
+        index.className = "bucket-index";
+
+        /* Display index. */
+        index.textContent =
+            `[ ${i} ]`;
+
+        /* Create bucket content. */
+        const content =
+            document.createElement("div");
+
+        /* Add content class. */
+        content.className =
+            "bucket-content";
+
+        /* Display empty state. */
+        content.textContent =
+            "EMPTY";
+
+        /* Add index. */
+        bucket.appendChild(index);
+
+        /* Add content. */
+        bucket.appendChild(content);
+
+        /* Add bucket to table. */
+        hashTable.appendChild(bucket);
+    }
+}
+
+
+/* =========================================================
+   CREATE CHARACTER CARDS
+========================================================= */
+
+function createCharacterCards() {
+
+    /* Clear old cards. */
+    characterGrid.innerHTML = "";
+
+    /* Loop through every character. */
+    for (
+        let i = 0;
+        i < hashKey.length;
+        i++
+    ) {
+
+        /* Get character. */
+        const character =
+            hashKey[i];
+
+        /* Get ASCII / Unicode code. */
+        const code =
+            character.charCodeAt(0);
+
+        /* Create card. */
+        const card =
+            document.createElement("div");
+
+        /* Add card class. */
+        card.className =
+            "character-card";
+
+        /* Give card an ID. */
+        card.id =
+            `char-${i}`;
+
+        /* Add character information. */
+        card.innerHTML = `
+
+            <div class="char">
+                ${escapeHTML(character)}
+            </div>
+
+            <div class="char-code">
+                Code: ${code}
+            </div>
+
+            <div class="char-index">
+                Index: ${i}
+            </div>
+
+        `;
+
+        /* Add card to grid. */
+        characterGrid.appendChild(card);
+    }
+}
+
+
+/* =========================================================
+   START HASH ANIMATION
+========================================================= */
+
+function startHash() {
+
+    /* Stop an existing animation. */
+    clearInterval(animationTimer);
+
+    /* Get input. */
+    hashKey =
+        keyInput.value;
+
+    /* Get table size. */
+    hashTableSize =
+        parseInt(tableSizeInput.value);
+
+    /* Validate key. */
+    if (hashKey.length === 0) {
+
+        addLog(
+            "⚠️ Enter a string to hash."
+        );
+
+        return;
+    }
+
+    /* Validate table size. */
+    if (
+        isNaN(hashTableSize) ||
+        hashTableSize < 2
+    ) {
+
+        addLog(
+            "⚠️ Table size must be at least 2."
+        );
+
+        return;
+    }
+
+    /* Reset calculation. */
+    currentStep = 0;
+
+    /* Reset hash value. */
+    hashValue = 0;
+
+    /* Create table. */
+    createHashTable();
+
+    /* Create character cards. */
+    createCharacterCards();
+
+    /* Update character count. */
+    document.getElementById(
+        "characterCount"
+    ).textContent =
+        hashKey.length;
+
+    /* Reset final index. */
+    document.getElementById(
+        "currentIndex"
+    ).textContent =
+        "-";
+
+    /* Reset progress. */
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "0%";
+
+    /* Display startup message. */
+    addLog(
+        `🚀 Starting hash for "${hashKey}".`
+    );
+
+    /* Process first character immediately. */
+    stepHash();
+
+    /* Continue automatically. */
+    animationTimer =
+        setInterval(() => {
+
+            /* Stop when complete. */
+            if (
+                currentStep >= hashKey.length
+            ) {
+
+                clearInterval(animationTimer);
+
+                finishHash();
+
+                return;
+            }
+
+            /* Process next character. */
+            stepHash();
+
+        }, 1000);
+}
+
+
+/* =========================================================
+   PROCESS ONE CHARACTER
+========================================================= */
+
+function stepHash() {
+
+    /* Stop if there is no key. */
+    if (hashKey.length === 0) {
+
+        hashKey =
+            keyInput.value;
+
+        if (hashKey.length === 0) {
+
+            addLog(
+                "⚠️ Enter a string first."
+            );
+
+            return;
+        }
+    }
+
+    /* Get current character. */
+    const character =
+        hashKey[currentStep];
+
+    /* Stop when all characters are processed. */
+    if (
+        currentStep >= hashKey.length
+    ) {
+
+        finishHash();
+
+        return;
+    }
+
+    /* Get character code. */
+    const charCode =
+        character.charCodeAt(0);
+
+    /* Calculate previous hash. */
+    const previousHash =
+        hashValue;
+
+    /* Calculate new hash. */
+    hashValue =
+        (
+            hashValue * 31 +
+            charCode
+        ) % hashTableSize;
+
+    /* Highlight current character. */
+    highlightCharacter(currentStep);
+
+    /* Update calculation display. */
+    calculation.innerHTML = `
+
+        <div class="calculation-line">
+
+            Character:
+
+            <span class="number">
+                "${escapeHTML(character)}"
+            </span>
+
+        </div>
+
+        <div class="calculation-line">
+
+            Character Code:
+
+            <span class="number">
+                ${charCode}
+            </span>
+
+        </div>
+
+        <div class="calculation-line">
+
+            Previous Hash:
+
+            <span class="number">
+                ${previousHash}
+            </span>
+
+        </div>
+
+        <div class="calculation-line">
+
+            Formula:
+
+            <span class="operator">
+                (${previousHash} × 31 + ${charCode})
+                % ${hashTableSize}
+            </span>
+
+        </div>
+
+        <div class="calculation-line">
+
+            New Hash:
+
+            <span class="result">
+                ${hashValue}
+            </span>
+
+        </div>
+
+    `;
+
+    /* Update hash statistic. */
+    document.getElementById(
+        "currentHash"
+    ).textContent =
+        hashValue;
+
+    /* Calculate progress. */
+    const percentage =
+        Math.round(
+            ((currentStep + 1) /
+                hashKey.length) *
+            100
+        );
+
+    /* Update progress. */
+    document.getElementById(
+        "progress"
+    ).textContent =
+        `${percentage}%`;
+
+    /* Highlight the current bucket. */
+    highlightBucket(hashValue);
+
+    /* Update bucket content. */
+    updateBucket(
+        hashValue,
+        character
+    );
+
+    /* Write to log. */
+    addLog(
+        `Character ${currentStep}: "${character}" → code ${charCode} → hash ${hashValue}`
+    );
+
+    /* Move to next character. */
+    currentStep++;
+}
+
+
+/* =========================================================
+   HIGHLIGHT CHARACTER
+========================================================= */
+
+function highlightCharacter(index) {
+
+    /* Get every character card. */
+    const cards =
+        document.querySelectorAll(
+            ".character-card"
+        );
+
+    /* Remove previous active state. */
+    cards.forEach(card => {
+
+        card.classList.remove("active");
+
+    });
+
+    /* Mark previous cards as complete. */
+    for (
+        let i = 0;
+        i < index;
+        i++
+    ) {
+
+        cards[i].classList.add(
+            "complete"
+        );
+    }
+
+    /* Highlight current card. */
+    const current =
+        document.getElementById(
+            `char-${index}`
+        );
+
+    /* Add active class. */
+    if (current) {
+
+        current.classList.add(
+            "active"
+        );
+    }
+}
+
+
+/* =========================================================
+   HIGHLIGHT HASH BUCKET
+========================================================= */
+
+function highlightBucket(index) {
+
+    /* Remove all active buckets. */
+    document
+        .querySelectorAll(".bucket")
+        .forEach(bucket => {
+
+            bucket.classList.remove(
+                "active"
+            );
+
+        });
+
+    /* Get target bucket. */
+    const bucket =
+        document.getElementById(
+            `bucket-${index}`
+        );
+
+    /* Highlight it. */
+    if (bucket) {
+
+        bucket.classList.add(
+            "active"
+        );
+    }
+}
+
+
+/* =========================================================
+   UPDATE BUCKET
+========================================================= */
+
+function updateBucket(
+    index,
+    character
+) {
+
+    /* Get target bucket. */
+    const bucket =
+        document.getElementById(
+            `bucket-${index}`
+        );
+
+    /* Make sure bucket exists. */
+    if (!bucket) {
+
+        return;
+    }
+
+    /* Mark bucket as filled. */
+    bucket.classList.add(
+        "filled"
+    );
+
+    /* Get bucket content. */
+    const content =
+        bucket.querySelector(
+            ".bucket-content"
+        );
+
+    /* Display current character. */
+    content.innerHTML = `
+
+        <strong>
+            "${escapeHTML(character)}"
+        </strong>
+
+        <br>
+
+        hash = ${index}
+
+    `;
+}
+
+
+/* =========================================================
+   FINISH HASH
+========================================================= */
+
+function finishHash() {
+
+    /* Stop animation. */
+    clearInterval(animationTimer);
+
+    /* Calculate final index. */
+    const finalIndex =
+        hashValue;
+
+    /* Display final index. */
+    document.getElementById(
+        "currentIndex"
+    ).textContent =
+        finalIndex;
+
+    /* Highlight final bucket. */
+    highlightBucket(
+        finalIndex
+    );
+
+    /* Complete all character cards. */
+    document
+        .querySelectorAll(
+            ".character-card"
+        )
+        .forEach(card => {
+
+            card.classList.remove(
+                "active"
+            );
+
+            card.classList.add(
+                "complete"
+            );
+        });
+
+    /* Display final calculation. */
+    calculation.innerHTML += `
+
+        <div
+            class="calculation-line"
+            style="margin-top:15px;"
+        >
+
+            <span class="result">
+                ✓ FINAL HASH INDEX = ${finalIndex}
+            </span>
+
+        </div>
+
+    `;
+
+    /* Log completion. */
+    addLog(
+        `✅ Hash complete. Final index = ${finalIndex}.`
+    );
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetVisualizer() {
+
+    /* Stop animation. */
+    clearInterval(animationTimer);
+
+    /* Reset variables. */
+    hashKey = "";
+    currentStep = 0;
+    hashValue = 0;
+
+    /* Reset statistics. */
+    document.getElementById(
+        "characterCount"
+    ).textContent =
+        "0";
+
+    document.getElementById(
+        "currentHash"
+    ).textContent =
+        "0";
+
+    document.getElementById(
+        "currentIndex"
+    ).textContent =
+        "-";
+
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "0%";
+
+    /* Clear character cards. */
+    characterGrid.innerHTML = "";
+
+    /* Reset calculation. */
+    calculation.innerHTML =
+        "Waiting for input...";
+
+    /* Re-read table size. */
+    hashTableSize =
+        parseInt(
+            tableSizeInput.value
+        ) || 10;
+
+    /* Create fresh table. */
+    createHashTable();
+
+    /* Clear log. */
+    log.innerHTML = "";
+
+    /* Add startup message. */
+    addLog(
+        "🔐 Hash Function Visualizer ready."
+    );
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    /* Convert special HTML characters. */
+    return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* =========================================================
+   LOGGING
+========================================================= */
+
+function addLog(message) {
+
+    /* Create log entry. */
+    const entry =
+        document.createElement("div");
+
+    /* Add class. */
+    entry.className =
+        "log-entry";
+
+    /* Get current time. */
+    const time =
+        new Date()
+            .toLocaleTimeString();
+
+    /* Add message. */
+    entry.innerHTML = `
+
+        <strong>
+            [${time}]
+        </strong>
+
+        ${escapeHTML(message)}
+
+    `;
+
+    /* Add newest message to the top. */
+    log.prepend(entry);
+}
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+keyInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        /* Start hashing when Enter is pressed. */
+        if (event.key === "Enter") {
+
+            startHash();
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>
